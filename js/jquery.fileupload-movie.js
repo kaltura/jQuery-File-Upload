@@ -47,8 +47,8 @@
         }
     );
 
-    // The File Upload Resize plugin extends the fileupload widget
-    // with image resize functionality:
+    // The File Upload movie plugin extends the fileupload widget
+    // with movie preview functionality:
     $.widget('blueimp.fileupload', $.blueimp.fileupload, {
 
         options: {
@@ -63,8 +63,8 @@
 
         processActions: {
 
-            // Loads the image given via data.files and data.index
-            // as img element if the browser supports canvas.
+            // Loads the movie given via data.files and data.index
+            // as video element if the browser supports video(HTML5).
             // Accepts the options fileTypes (regular expression)
             // and maxFileSize (integer) to limit the files to load:
             loadMovie: function (data, options) {
@@ -116,8 +116,8 @@
             },
 
 
-            // Sets the resized version of the image as a property of the
-            // file object, must be called after "saveImage":
+            // Sets the video a property of the
+            // file object:
             setMovie: function (data, options) {
                 var img =  data.movie;
                 if (img && !options.disabled) {
