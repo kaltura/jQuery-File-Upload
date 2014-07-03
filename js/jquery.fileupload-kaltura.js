@@ -31,9 +31,11 @@
 }(function ($) {
     'use strict';
 	var executeCordova;
+	var isAndroidNative = false;
 
     var originalAdd = $.blueimp.fileupload.prototype.options.add;
     var originaldone = $.blueimp.fileupload.prototype.options.done;
+	var originalOnAdd =  $.blueimp.fileupload.prototype._onAdd;
 
     // The File Upload Processing plugin extends the fileupload widget
     // with file processing functionality:
@@ -43,7 +45,6 @@
             apiURL:'http://www.kaltura.com/api_v3/',
             url: 'http://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
 			host: 'http://www.kaltura.com',
-			isAndroidNative: false,
             chunkbefore: function (e, data) {
 				var isLastChunk = data.maxChunkSize -  data.chunkSize >  0;
                 var isFirstChunk = data.uploadedBytes == 0;
@@ -84,8 +85,13 @@
                         "create_url":data.apiURL + "?service=baseEntry&action=addfromuploadedfile&format=1&entry:objectType=KalturaBaseEntry&entry:type=-1&entry:name="+data.result.fileName+"&ks=" + data.ks +"&uploadTokenId=" + data.result.id ,
                         "create_type":"GET"
                     }]
-                }
-    },
+                } ,
+			fail: function() {
+				if ( isAndroidNative ) {
+					executeCordova("cancelUpload", [] );
+				}
+			}
+    	},
         _getUploadedBytes: function (jqXHR) {
             if (jqXHR && jqXHR.responseText && jqXHR.responseText.indexOf("uploadedFileSize") > 0)
             {
@@ -223,7 +229,7 @@
                         resumeAt:0};
                 }
 
-				if ( that.options.isAndroidNative ) {
+				if ( isAndroidNative ) {
 					window.fileUploadProgress =  function ( val ) {
 						var eventData = JSON.parse( val );
 						that._trigger(
@@ -245,14 +251,14 @@
 						that._trigger('finished', e, eventData);
 					}
 
-					window.fileUploadDone = function ( val, uploadTokenId ) {
+					window.fileUploadDone = function ( val ) {
 						that.options.textStatus = "success";
 						var file = JSON.parse( val );
 						if ( !that.options.files ) {
 							that.options.files = [];
 						}
 						that.options.files.push( file );
-						that.options.uploadTokenId  = uploadTokenId;
+						that.options.uploadTokenId  = kalturaUploadToken.id;
 						that._trigger(
 							'done',
 							e,
@@ -262,6 +268,7 @@
 
 					data.submit = function() {
 						executeCordova("startUpload", [ that.options.host, data.formData ] );
+						that.element.trigger( "fileuploadsend", that.options );
 					}
 					masterdfd.resolve( data );
 				} else {
@@ -348,7 +355,7 @@
             this._super();
 
 			if ( navigator.userAgent.indexOf( 'Android') != -1 && navigator.userAgent.indexOf('kalturaNativeCordovaPlayer') != -1 ) {
-				that.options.isAndroidNative = true;
+				isAndroidNative = true;
 
 				executeCordova= function( methodName, params ) {
 					cordova.kWidget.exec( methodName, params ,'FileChooserPlugin');
@@ -359,7 +366,12 @@
 				});
 			}
 
-        }
+        },
+		_onAdd: function( e, data) {
+			originalOnAdd.call( this, e, data );
+			this.options.files = data.files;
+
+		}
     })
 }));
 
