@@ -86,7 +86,7 @@
                         "create_type":"GET"
                     }]
                 } ,
-			fail: function() {
+			fail: function(e, data) {
 				if ( isAndroidNative ) {
 					executeCordova("cancelUpload", [] );
 				}
@@ -232,6 +232,7 @@
 				if ( isAndroidNative ) {
 					window.fileUploadProgress =  function ( val ) {
 						var eventData = JSON.parse( val );
+						eventData.uploadBoxId = that.options.uploadBoxId;
 						that._trigger(
 							'progressall',
 							$.Event('progressall', {delegatedEvent: e}),
@@ -247,6 +248,7 @@
 
 					window.fileUploadFailed = function ( fileName ) {
 						var eventData = {files: [{name: fileName}]}
+						eventData.uploadBoxId = that.options.uploadBoxId;
 						that._trigger('failed', e, eventData);
 						that._trigger('finished', e, eventData);
 					}
@@ -267,7 +269,10 @@
 					}
 
 					data.submit = function() {
-						executeCordova("startUpload", [ that.options.host, data.formData ] );
+						if ( !that.options.uploadBoxId ) {
+							that.options.uploadBoxId = 1;
+						}
+						executeCordova("startUpload", [ that.options.host, data.formData, that.options.uploadBoxId  ] );
 						that.element.trigger( "fileuploadsend", that.options );
 					}
 					masterdfd.resolve( data );
@@ -360,10 +365,11 @@
 				executeCordova= function( methodName, params ) {
 					cordova.kWidget.exec( methodName, params ,'FileChooserPlugin');
 				};
-
-				that.options.fileInput.click(function(){
+				//TODO - take id from params
+				$('#uploadbutton' ).click(function(){
 					executeCordova("openFileChooser", [ that.element.attr('id') ] );
 				});
+
 			}
 
         },
