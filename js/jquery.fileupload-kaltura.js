@@ -251,6 +251,7 @@
 						eventData.uploadBoxId = that.options.uploadBoxId;
 						that._trigger('failed', e, eventData);
 						that._trigger('finished', e, eventData);
+						that._trigger('always', e, eventData);
 					}
 
 					window.fileUploadDone = function ( val ) {
