@@ -232,7 +232,7 @@
 				if ( isAndroidNative ) {
 					window.fileUploadProgress =  function ( val ) {
 						var eventData = JSON.parse( val );
-						eventData.uploadBoxId = that.options.uploadBoxId;
+						$.extend(eventData,data);
 						that._trigger(
 							'progressall',
 							$.Event('progressall', {delegatedEvent: e}),
@@ -248,31 +248,24 @@
 
 					window.fileUploadFailed = function ( fileName ) {
 						var eventData = {files: [{name: fileName}]}
-						eventData.uploadBoxId = that.options.uploadBoxId;
+						$.extend(eventData,data);
 						that._trigger('failed', e, eventData);
 						that._trigger('finished', e, eventData);
 						that._trigger('always', e, eventData);
 					}
 
 					window.fileUploadDone = function ( val ) {
-						that.options.textStatus = "success";
 						var file = JSON.parse( val );
-						if ( !that.options.files ) {
-							that.options.files = [];
-						}
-						that.options.files.push( file );
-						that.options.uploadTokenId  = kalturaUploadToken.id;
+						var eventData = {files:[file], textStatus:"success", uploadTokenId:kalturaUploadToken.id };
+						$.extend(eventData,data);
 						that._trigger(
 							'done',
 							e,
-							that.options
+							eventData
 						);
 					}
 
 					data.submit = function() {
-						if ( !that.options.uploadBoxId ) {
-							that.options.uploadBoxId = 1;
-						}
 						executeCordova("startUpload", [ that.options.host, data.formData, that.options.uploadBoxId  ] );
 						that.element.trigger( "fileuploadsend", that.options );
 					}
@@ -366,9 +359,8 @@
 				executeCordova= function( methodName, params ) {
 					cordova.kWidget.exec( methodName, params ,'FileChooserPlugin');
 				};
-				//TODO - take id from params
-				$('#uploadbutton' ).click(function(){
-					executeCordova("openFileChooser", [ that.element.attr('id') ] );
+				$('.fileinput' ).click(function( e ){
+					executeCordova("openFileChooser", [ that.element.attr('id'), e.target.id ] );
 				});
 
 			}
