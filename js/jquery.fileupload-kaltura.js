@@ -254,9 +254,8 @@
 						that._trigger('always', e, eventData);
 					}
 
-					window.fileUploadDone = function ( val ) {
-						var file = JSON.parse( val );
-						var eventData = {files:[file], textStatus:"success", uploadTokenId:kalturaUploadToken.id };
+					window.fileUploadDone = function ( ) {
+						var eventData = {files: data.files, textStatus:"success", uploadTokenId:kalturaUploadToken.id };
 						$.extend(eventData,data);
 						that._trigger(
 							'done',
@@ -361,6 +360,8 @@
 				};
 				$('.fileinput' ).click(function( e ){
 					executeCordova("openFileChooser", [ that.element.attr('id'), e.target.id ] );
+					e.stopPropagation();
+					return false;
 				});
 
 			}
