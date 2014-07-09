@@ -247,11 +247,9 @@
 					}
 
 					window.fileUploadFailed = function ( fileName ) {
-						var eventData = {files: [{name: fileName}]}
-						$.extend(eventData,data);
-						that._trigger('failed', e, eventData);
-						that._trigger('finished', e, eventData);
-						that._trigger('always', e, eventData);
+						that._trigger('failed', e, data);
+						that._trigger('finished', e, data);
+						that._trigger('always', e, data);
 					}
 
 					window.fileUploadDone = function ( ) {
@@ -265,8 +263,12 @@
 					}
 
 					data.submit = function() {
-						executeCordova("startUpload", [ that.options.host, data.formData, that.options.uploadBoxId  ] );
-						that.element.trigger( "fileuploadsend", that.options );
+						window.startUploadCallback = function( started ) {
+							if ( started === 'true' ) {
+								that._trigger("send", e, data);
+							}
+						}
+						executeCordova("startUpload", [ that.options.host, data.formData ] );
 					}
 					masterdfd.resolve( data );
 				} else {
@@ -358,12 +360,12 @@
 				executeCordova= function( methodName, params ) {
 					cordova.kWidget.exec( methodName, params ,'FileChooserPlugin');
 				};
-				$('.fileinput' ).click(function( e ){
+
+				$('body').on('click','.fileinput', (function( e ){
 					executeCordova("openFileChooser", [ that.element.attr('id'), e.target.id ] );
 					e.stopPropagation();
 					return false;
-				});
-
+				}));
 			}
 
         },
