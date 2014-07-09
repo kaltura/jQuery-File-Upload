@@ -120,7 +120,7 @@
             }
 
 			//disable chunks if Android native browser
-			if ( navigator.userAgent.indexOf( 'Android') != -1 && ( navigator.userAgent.indexOf( 'Chrome') == -1 && !isNativeApp))  {
+			if ( navigator.userAgent.indexOf( 'Android') != -1 && ( navigator.userAgent.indexOf( 'Chrome') == -1 && !isAndroidNative))  {
 				that.options.maxChunkSize = undefined;
 			}
             var getUpload = function(tokenId) {
