@@ -73,7 +73,6 @@
                  }
             },
             getFilesFromResponse:function (data) {
-	            debugger;
                 return    [
                     { "name": data.result.fileName,
                         "size": data.result.fileSize,
