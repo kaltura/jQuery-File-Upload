@@ -15,6 +15,7 @@ Note that you'll need to [start a Katura Session](http://knowledge.kaltura.com/f
 ```html
 <script src="/js/vendor/jquery.ui.widget.js"></script>
 <script src="/js/jquery.fileupload.js"></script>
+<script src="/js/jquery.deparam-kaltura.js"></script>
 <script src="/js/jquery.fileupload-kaltura.js"></script>
 <script type="text/javascript">
   var setupUpload = function() {
