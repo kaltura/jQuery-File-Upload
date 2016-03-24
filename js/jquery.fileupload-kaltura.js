@@ -40,8 +40,8 @@
 
         options: {
             ks:null,
-            apiURL:'http://www.kaltura.com/api_v3/',
-            url: 'http://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
+            apiURL:'https://www.kaltura.com/api_v3/',
+            url: 'https://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
             chunkbefore: function (e, data) {
 
                 var isLastChunk = data.maxChunkSize -  data.chunkSize >  0;

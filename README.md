@@ -20,8 +20,8 @@ Note that you'll need to [start a Katura Session](http://knowledge.kaltura.com/f
 <script type="text/javascript">
   var setupUpload = function() {
     file = $('input[name="fileData"]').fileupload({
-      apiURL:'http://www.kaltura.com/api_v3/',
-      url: 'http://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
+      apiURL:'https://www.kaltura.com/api_v3/',
+      url: 'https://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
       ks: client.ks,
       singleFileUploads:true,
       dataType: 'json',
