@@ -101,6 +101,7 @@
 <!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script src="js/webtoolkit.md5.js"></script>
+<script src="js/jquery.deparam-kaltura.js"></script>
 <script src="js/jquery.fileupload-kaltura.js"></script>
 <script src="//cdnapisec.kaltura.com/p/243342/sp/24334200/embedIframeJs/uiconf_id/20540612/partner_id/243342"></script>
 <script src="//cdnapisec.kaltura.com/html5/html5lib/v2.10/kWidget/kWidget.auth.js"></script>
@@ -144,8 +145,8 @@ $(function () {
 
         $("#fileupload").show();
         $('#fileupload').fileupload({
-            apiURL:'http://www.kaltura.com/api_v3/',
-            url: 'http://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
+            apiURL:'https://www.kaltura.com/api_v3/',
+            url: 'https://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
             ks: ks,
             ignoreChunkHeader:true,
             dataType: 'json',
@@ -221,5 +222,5 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-41071247-1', 'blueimp.github.io');
 ga('send', 'pageview');
 </script>
-</body> 
+</body>
 </html>

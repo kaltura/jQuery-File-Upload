@@ -121,6 +121,7 @@
 <script src="js/jquery.fileupload-video.js"></script>
 <!-- The File Upload validation plugin -->
 <script src="js/jquery.fileupload-validate.js"></script>
+<script src="js/jquery.deparam-kaltura.js"></script>
 <!-- The File Upload validation plugin -->
 <script src="js/jquery.fileupload-kaltura.js"></script>
 <script src="js/webtoolkit.md5.js"></script>
@@ -167,7 +168,7 @@ $(function () {
 
         //if you want to resume
         //      uploadTokenId:'0_6fccfd020a1ec43d1f7015147ea92574',
-        url: 'http://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
+        url: 'https://www.kaltura.com/api_v3/?service=uploadToken&action=upload&format=1',
         dataType: 'json',
         autoUpload: false,
 
@@ -248,5 +249,5 @@ $(function () {
 });
 </script>
 
-</body> 
+</body>
 </html>
